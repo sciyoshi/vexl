@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "vexl"
+version = "0.1.0"
+description = "Versatile Expression Language"
+authors = ["Samuel Cormier-Iijima <samuel@cormier-iijima.com>"]
+license = "MIT"
+
+[tool.poetry.dependencies]
+python = "^3.7"
+ply = "^3.11"
+
+[tool.poetry.dev-dependencies]
+pytest = "^4.3"
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"
+
+[tool.black]
