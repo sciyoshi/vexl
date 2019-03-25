@@ -1,6 +1,6 @@
 import pytest
 
-from vexl.parser import parser
+from vexl.parser import parse
 from vexl.nodes import (
     Op,
     Null,
@@ -77,9 +77,17 @@ cases = [
     ["1 > 2", BinOp(Number(1), Op.GT, Number(2))],
     ["1 <= 2", BinOp(Number(1), Op.LE, Number(2))],
     ["1 < 2", BinOp(Number(1), Op.LT, Number(2))],
+    ["1 + 2", BinOp(Number(1), Op.ADD, Number(2))],
+    ["1 - 2", BinOp(Number(1), Op.SUB, Number(2))],
+    ["1 * 2", BinOp(Number(1), Op.MUL, Number(2))],
+    ["1 / 2", BinOp(Number(1), Op.DIV, Number(2))],
+    ["1 * 2 / 3", BinOp(BinOp(Number(1), Op.MUL, Number(2)), Op.DIV, Number(3))],
+    ["1 / 2 / 3", BinOp(BinOp(Number(1), Op.DIV, Number(2)), Op.DIV, Number(3))],
+    ["1 * 2 + 3", BinOp(BinOp(Number(1), Op.MUL, Number(2)), Op.ADD, Number(3))],
+    ["1 + 2 * 3", BinOp(Number(1), Op.ADD, BinOp(Number(2), Op.MUL, Number(3)))],
 ]
 
 
 @pytest.mark.parametrize("expr,result", cases)
 def test_parser(expr, result):
-    assert parser.parse(expr) == result
+    assert parse(expr) == result

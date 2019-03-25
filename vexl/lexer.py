@@ -1,4 +1,4 @@
-from typing import Iterator, Callable
+from typing import Iterator, Callable, Any
 
 import re
 import ply.lex  # type: ignore
@@ -12,7 +12,7 @@ class LexToken:
     """
 
     type: str
-    value: str
+    value: Any
 
 
 def _op_lexer(op: Op) -> Callable[[LexToken], LexToken]:

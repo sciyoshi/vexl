@@ -1,4 +1,4 @@
-from typing import List, Optional, Union
+from typing import List as ListT, Optional, Union, Any
 import re
 import enum
 import dataclasses
@@ -34,7 +34,7 @@ class Op(enum.Enum):
         self.symbol = symbol
         self.regex = regex or re.escape(symbol)
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return f"{type(self).__qualname__}.{self.name}"
 
 
@@ -52,7 +52,7 @@ class UnaryOp(Node):
 @dataclasses.dataclass
 class BoolOp(Node):
     op: Op
-    args: List[Node]
+    args: ListT[Node]
 
 
 @dataclasses.dataclass
@@ -98,5 +98,5 @@ class String(Value):
 
 
 @dataclasses.dataclass
-class List(Value):
-    items: List[Node] = dataclasses.field(default_factory=list)
+class List(Node):
+    items: ListT[Node] = dataclasses.field(default_factory=list)
