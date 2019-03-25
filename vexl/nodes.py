@@ -1,4 +1,4 @@
-from typing import List, Optional
+from typing import List, Optional, Union
 import re
 import enum
 import dataclasses
@@ -20,8 +20,8 @@ class Op(enum.Enum):
     LE = (40, "<=")
     ADD = (50, "+")
     SUB = (50, "-")
-    MUL = (50, "*")
-    DIV = (50, "/")
+    MUL = (60, "*")
+    DIV = (60, "/")
 
     precedence: int
     symbol: str
@@ -30,9 +30,14 @@ class Op(enum.Enum):
     def __init__(self, precedence: int, symbol: str, regex: Optional[str] = None):
         self.precedence = precedence
         self.symbol = symbol
+        self.regex = None
 
+        # Operators that are multiple words will be lexed + parsed separately.
         if " " not in symbol:
             self.regex = regex or re.escape(symbol)
+
+    def __repr__(self):
+        return f"{type(self).__qualname__}.{self.name}"
 
 
 @dataclasses.dataclass
@@ -42,18 +47,26 @@ class Node:
 
 @dataclasses.dataclass
 class UnaryOp(Node):
-    pass
+    op: Op
+    arg: Node
 
 
 @dataclasses.dataclass
 class BoolOp(Node):
+    op: Op
     args: List[Node]
 
 
 @dataclasses.dataclass
 class BinOp(Node):
     left: Node
+    op: Op
     right: Node
+
+
+@dataclasses.dataclass
+class Ident(Node):
+    name: str
 
 
 @dataclasses.dataclass
@@ -63,4 +76,19 @@ class Value(Node):
 
 @dataclasses.dataclass
 class Null(Value):
-    pass
+    value = None
+
+
+@dataclasses.dataclass
+class Bool(Value):
+    value: bool
+
+
+@dataclasses.dataclass
+class Number(Value):
+    value: Union[int, float]
+
+
+@dataclasses.dataclass
+class String(Value):
+    value: str

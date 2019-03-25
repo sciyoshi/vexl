@@ -26,14 +26,14 @@ cases = [
     ["word", [("IDENT", "word")]],
     ["b6_a4_c3", [("IDENT", "b6_a4_c3")]],
     # Operations
-    ["+", [("ADD", "+")]],
-    ["-", [("SUB", "-")]],
-    ["*", [("MUL", "*")]],
-    ["/", [("DIV", "/")]],
-    # Keywords
-    ["and", [("AND", Op.AND)]],
     ["or", [("OR", Op.OR)]],
+    ["and", [("AND", Op.AND)]],
     ["not", [("NOT", Op.NOT)]],
+    ["+", [("ADD", Op.ADD)]],
+    ["-", [("SUB", Op.SUB)]],
+    ["*", [("MUL", Op.MUL)]],
+    ["/", [("DIV", Op.DIV)]],
+    # Keywords
     ["null", [("NULL", "null")]],
     ["true", [("TRUE", "true")]],
     ["false", [("FALSE", "false")]],

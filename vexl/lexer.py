@@ -35,9 +35,9 @@ tokens = tuple(op.name for op in Op) + (
     "IDENT",
     "NUMBER",
     "STRING",
+    "NULL",
     "TRUE",
     "FALSE",
-    "NULL",
     "EMPTY",
 )
 
@@ -45,12 +45,18 @@ tokens = tuple(op.name for op in Op) + (
 t_OR = _op_lexer(Op.OR)
 t_AND = _op_lexer(Op.AND)
 t_NOT = _op_lexer(Op.NOT)
-
-
-t_ADD = r"\+"
-t_SUB = r"-"
-t_MUL = r"\*"
-t_DIV = r"/"
+t_IN = _op_lexer(Op.IN)
+t_CT = _op_lexer(Op.CT)
+t_EQ = _op_lexer(Op.EQ)
+t_NE = _op_lexer(Op.NE)
+t_GT = _op_lexer(Op.GT)
+t_GE = _op_lexer(Op.GE)
+t_LT = _op_lexer(Op.LT)
+t_LE = _op_lexer(Op.LE)
+t_ADD = _op_lexer(Op.ADD)
+t_SUB = _op_lexer(Op.SUB)
+t_MUL = _op_lexer(Op.MUL)
+t_DIV = _op_lexer(Op.DIV)
 t_LPAREN = r"\("
 t_RPAREN = r"\)"
 t_LBRACKET = r"\["
@@ -85,7 +91,7 @@ def t_error(t: LexToken) -> LexToken:
     pass
 
 
-_lexer = ply.lex.lex(reflags=re.UNICODE)
+_lexer = ply.lex.lex(reflags=re.UNICODE | re.IGNORECASE)
 
 
 def lex(data: str) -> Iterator[LexToken]:
