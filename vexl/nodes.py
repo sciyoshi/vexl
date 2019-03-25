@@ -63,13 +63,13 @@ class BinOp(Node):
 
 
 @dataclasses.dataclass
-class Ident(Node):
-    name: str
+class Empty(Node):
+    pass
 
 
 @dataclasses.dataclass
-class Empty(Node):
-    pass
+class Ident(Node):
+    name: str
 
 
 @dataclasses.dataclass
@@ -95,3 +95,8 @@ class Number(Value):
 @dataclasses.dataclass
 class String(Value):
     value: str
+
+
+@dataclasses.dataclass
+class List(Value):
+    items: List[Node] = dataclasses.field(default_factory=list)

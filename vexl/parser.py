@@ -1,7 +1,18 @@
 import ply.yacc  # type: ignore
 
 from .lexer import tokens  # noqa
-from .nodes import Op, Null, Bool, Number, String, Ident, UnaryOp, BoolOp, BinOp, Empty
+from .nodes import (
+    Null,
+    Bool,
+    Number,
+    String,
+    Ident,
+    List,
+    UnaryOp,
+    BoolOp,
+    BinOp,
+    Empty,
+)
 
 
 precedence = (
@@ -76,6 +87,13 @@ def p_expr_binop_is_empty(p):
     p[0] = BinOp(left=p[1], op=p[2], right=Empty())
 
 
+def p_expr_paren(p):
+    """
+    expr : LPAREN expr RPAREN
+    """
+    p[0] = p[2]
+
+
 def p_expr(p):
     """
     expr : value
@@ -90,6 +108,7 @@ def p_value(p):
           | bool
           | string
           | number
+          | list
     """
     p[0] = p[1]
 
@@ -128,6 +147,28 @@ def p_ident(p):
     ident : IDENT
     """
     p[0] = Ident(p[1])
+
+
+def p_list(p):
+    """
+    list : LBRACKET expr_list RBRACKET
+    """
+    p[0] = List(p[2])
+
+
+def p_list_empty(p):
+    """
+    list : LBRACKET RBRACKET
+    """
+    p[0] = List()
+
+
+def p_expr_list(p):
+    """
+    expr_list : expr COMMA expr_list
+              | expr
+    """
+    p[0] = [p[1]] if len(p) == 2 else [p[1], *p[3]]
 
 
 def p_error(p):
