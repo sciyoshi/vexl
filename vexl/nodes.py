@@ -8,16 +8,18 @@ class Op(enum.Enum):
     OR = (10, "or")
     AND = (20, "and")
     NOT = (30, "not")
+    IS = (40, "is")
+    ISNOT = (40, "is not", r"is\s*not")
     IN = (40, "in")
-    NOTIN = (40, "not in")
+    NOTIN = (40, "not in", r"not\s*in")
     CT = (40, "~")
     NOTCT = (40, "!~")
     EQ = (40, "=")
     NE = (40, "!=")
-    GT = (40, ">")
     GE = (40, ">=")
-    LT = (40, "<")
+    GT = (40, ">")
     LE = (40, "<=")
+    LT = (40, "<")
     ADD = (50, "+")
     SUB = (50, "-")
     MUL = (60, "*")
@@ -30,11 +32,7 @@ class Op(enum.Enum):
     def __init__(self, precedence: int, symbol: str, regex: Optional[str] = None):
         self.precedence = precedence
         self.symbol = symbol
-        self.regex = None
-
-        # Operators that are multiple words will be lexed + parsed separately.
-        if " " not in symbol:
-            self.regex = regex or re.escape(symbol)
+        self.regex = regex or re.escape(symbol)
 
     def __repr__(self):
         return f"{type(self).__qualname__}.{self.name}"
@@ -67,6 +65,11 @@ class BinOp(Node):
 @dataclasses.dataclass
 class Ident(Node):
     name: str
+
+
+@dataclasses.dataclass
+class Empty(Node):
+    pass
 
 
 @dataclasses.dataclass

@@ -1,13 +1,28 @@
 import ply.yacc  # type: ignore
 
 from .lexer import tokens  # noqa
-from .nodes import Null, Bool, Number, String, UnaryOp, BoolOp, BinOp
+from .nodes import Op, Null, Bool, Number, String, Ident, UnaryOp, BoolOp, BinOp, Empty
 
 
 precedence = (
     ("left", "OR"),
     ("left", "AND"),
     ("left", "NOT"),
+    (
+        "nonassoc",
+        "IS",
+        "ISNOT",
+        "IN",
+        "NOTIN",
+        "CT",
+        "NOTCT",
+        "EQ",
+        "NE",
+        "GE",
+        "GT",
+        "LE",
+        "LT",
+    ),
     ("left", "ADD", "SUB"),
     ("left", "MUL", "DIV"),
 )
@@ -33,7 +48,19 @@ def p_expr_unaryop(p):
 
 def p_expr_binop(p):
     """
-    expr : expr ADD expr
+    expr : expr IS expr
+         | expr ISNOT expr
+         | expr IN expr
+         | expr NOTIN expr
+         | expr CT expr
+         | expr NOTCT expr
+         | expr EQ expr
+         | expr NE expr
+         | expr GE expr
+         | expr GT expr
+         | expr LE expr
+         | expr LT expr
+         | expr ADD expr
          | expr SUB expr
          | expr MUL expr
          | expr DIV expr
@@ -41,9 +68,18 @@ def p_expr_binop(p):
     p[0] = BinOp(left=p[1], op=p[2], right=p[3])
 
 
+def p_expr_binop_is_empty(p):
+    """
+    expr : expr IS EMPTY %prec IS
+         | expr ISNOT EMPTY %prec IS
+    """
+    p[0] = BinOp(left=p[1], op=p[2], right=Empty())
+
+
 def p_expr(p):
     """
     expr : value
+         | ident
     """
     p[0] = p[1]
 
@@ -85,6 +121,13 @@ def p_string(p):
     string : STRING
     """
     p[0] = String(p[1])
+
+
+def p_ident(p):
+    """
+    ident : IDENT
+    """
+    p[0] = Ident(p[1])
 
 
 def p_error(p):
