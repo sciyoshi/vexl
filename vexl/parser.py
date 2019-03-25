@@ -180,7 +180,7 @@ def p_error(p: ParseList) -> None:
     raise
 
 
-_parser = ply.yacc.yacc(debug=False, write_tables=False)
+_parser = ply.yacc.yacc(debug=True, write_tables=False)
 
 
 def parse(expr: str) -> Node:

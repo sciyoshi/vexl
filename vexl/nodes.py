@@ -40,7 +40,10 @@ class Op(enum.Enum):
 
 @dataclasses.dataclass
 class Node:
-    pass
+    def __str__(self) -> str:
+        from .visitors import FormatVisitor
+
+        return FormatVisitor().visit(self)
 
 
 @dataclasses.dataclass

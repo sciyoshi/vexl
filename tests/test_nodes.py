@@ -1,7 +1,6 @@
 import pytest
 
 from vexl.parser import parse
-from vexl.visitors import FormatVisitor
 
 cases = [
     # Null
@@ -62,9 +61,13 @@ cases = [
     ["1 / 2 / 3"],
     ["1 * 2 + 3"],
     ["1 + 2 * 3"],
+    # Complex
+    ["1 is 2 + 3 is 4"],
+    ["(1 + 2) * 3 - 5 / 6"],
+    ["(1.75 - 2) * [1, 4] - 'str' ~ 5 / 6 and 4 < 'another' or not 6 < 3"],
 ]
 
 
 @pytest.mark.parametrize("expr", [case[0] for case in cases])
 def test_format(expr):
-    assert FormatVisitor().visit(parse(expr)) == expr
+    assert str(parse(expr)) == expr
