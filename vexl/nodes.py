@@ -1,4 +1,4 @@
-from typing import List as ListT, Optional, Union, Any
+from typing import List as ListT, Optional, Union
 import re
 import enum
 import dataclasses

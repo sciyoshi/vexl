@@ -1,6 +1,5 @@
 import pytest
 
-from vexl.nodes import Node
 from vexl.parser import parse
 from vexl.visitors import FormatVisitor
 
