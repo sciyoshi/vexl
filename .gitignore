@@ -4,3 +4,5 @@
 __pycache__
 poetry.lock
 pip-wheel-metadata
+node_modules
+.rpt2_cache
