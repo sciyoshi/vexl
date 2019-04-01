@@ -1,7 +1,8 @@
-from typing import Any, Iterator, Union
+from typing import cast, Any, Iterator, Union, TypeVar, Generic, Dict
 import dataclasses
 
 from .nodes import (
+    Op,
     Node,
     Null,
     Bool,
@@ -17,20 +18,24 @@ from .nodes import (
 
 OpNode = Union[UnaryOp, BoolOp, BinOp]
 
+T = TypeVar("T")
 
-class Visitor:
-    def visit(self, node: Node) -> Any:
+
+class Visitor(Generic[T]):
+    def visit(self, node: Node) -> T:
         for tp in type(node).__mro__:
             if tp is Node:
                 break
 
             if isinstance(node, (UnaryOp, BoolOp, BinOp)) and hasattr(
-                self, f"visit_{tp.__name__}_{node.op}"
+                self, f"visit_{tp.__name__}_{node.op.name}"
             ):
-                return getattr(self, f"visit_{tp.__name__}_{node.op}")(node)
+                return cast(
+                    T, getattr(self, f"visit_{tp.__name__}_{node.op.name}")(node)
+                )
 
             if hasattr(self, f"visit_{tp.__name__}"):
-                return getattr(self, f"visit_{tp.__name__}")(node)
+                return cast(T, getattr(self, f"visit_{tp.__name__}")(node))
 
         return self.visit_Node(node)
 
@@ -43,12 +48,14 @@ class Visitor:
             elif isinstance(child, list):
                 yield from child
 
-    def visit_Node(self, node: Node) -> Any:
+    def visit_Node(self, node: Node) -> T:
         for child in self.children(node):
             self.visit(child)
 
+        return cast(T, None)
 
-class FormatVisitor(Visitor):
+
+class FormatVisitor(Visitor[str]):
     def paren(self, parent: OpNode, child: Node) -> str:
         if not isinstance(child, (UnaryOp, BoolOp, BinOp)):
             return self.visit(child)
@@ -57,9 +64,6 @@ class FormatVisitor(Visitor):
             return self.visit(child)
 
         return f"({self.visit(child)})"
-
-    def visit_List(self, node: List) -> str:
-        return f"[{', '.join(self.visit(child) for child in self.children(node))}]"
 
     def visit_Null(self, node: Null) -> str:
         return "null"
@@ -75,6 +79,9 @@ class FormatVisitor(Visitor):
 
     def visit_Ident(self, node: Ident) -> str:
         return node.name
+
+    def visit_List(self, node: List) -> str:
+        return f"[{', '.join(self.visit(el) for el in self.children(node))}]"
 
     def visit_Empty(self, node: Empty) -> str:
         return "empty"
@@ -95,3 +102,62 @@ class FormatVisitor(Visitor):
 
     def visit_Node(self, node: Node) -> str:
         return str(node)
+
+
+@dataclasses.dataclass
+class EvaluationVisitor(Visitor[Any]):
+    context: Dict[str, Any]
+
+    def visit_Null(self, node: Null) -> Any:
+        return None
+
+    def visit_Bool(self, node: Bool) -> Any:
+        return node.value
+
+    def visit_Number(self, node: Number) -> Any:
+        return node.value
+
+    def visit_String(self, node: String) -> Any:
+        return node.value
+
+    def visit_Ident(self, node: Ident) -> Any:
+        return self.context[node.name]
+
+    def visit_List(self, node: List) -> Any:
+        return [self.visit(el) for el in self.children(node)]
+
+    def visit_UnaryOp(self, node: UnaryOp) -> Any:
+        value = self.visit(node.arg)
+
+        if node.op == Op.NOT:
+            return not value
+
+        return value
+
+    def visit_BoolOp_AND(self, node: BoolOp) -> Any:
+        result: Any = True
+
+        for arg in node.args:
+            el = self.visit(arg)
+            if el is not None and not el:
+                return el
+            if result is not None:
+                result = el
+
+        return result
+
+    def visit_BoolOp_OR(self, node: BoolOp) -> Any:
+        result: Any = False
+
+        for arg in node.args:
+            el = self.visit(arg)
+            if el is not None and el:
+                return el
+            if result is not None:
+                result = el
+
+        return result
+
+    def visit_BinOp(self, node: BinOp) -> Any:
+        # left, right = self.visit(node.left), self.visit(node.right)
+        pass
