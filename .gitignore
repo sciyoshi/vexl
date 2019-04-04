@@ -5,4 +5,7 @@ __pycache__
 poetry.lock
 pip-wheel-metadata
 node_modules
+js/coverage
+js/dist
+package-lock.json
 .rpt2_cache

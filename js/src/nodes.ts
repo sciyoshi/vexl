@@ -65,6 +65,12 @@ export class BinOp extends Node {
 	}
 }
 
+export class Null extends Node {
+	valueOf(): null {
+		return null;
+	}
+}
+
 export class Value<T> extends Node {
 	static props = ["value"];
 

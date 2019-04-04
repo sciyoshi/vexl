@@ -1,5 +1,8 @@
-import { parse } from "../src/index";
+import { parse, Null, Bool } from "../src/index"
 
-describe("hello", () => {
-	expect(parse('2')).toBe('2');
+describe("expression parser", () => {
+	it("parses nulls", () => {
+		expect(parse('null')).toBeInstanceOf(Null);
+		expect(parse('NULL')).toBeInstanceOf(Null);
+	});
 });
