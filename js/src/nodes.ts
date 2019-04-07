@@ -71,13 +71,13 @@ export class BinOp extends Node {
 		this.op = op;
 		this.right = right;
 	}
+
+	toString(): string {
+		return `${this.left} ${this.op} ${this.right}`;
+	}
 }
 
 export class Empty extends Node {
-	valueOf(): null {
-		return null;
-	}
-
 	toString(): string {
 		return "empty";
 	}
@@ -91,6 +91,10 @@ export class Ident extends Node {
 	constructor(name: string) {
 		super();
 		this.name = name;
+	}
+
+	toString(): string {
+		return this.name;
 	}
 }
 
