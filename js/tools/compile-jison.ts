@@ -1,7 +1,7 @@
 const { Jison } = require("jison");
 
 const imports = `
-import { Null } from "./nodes";
+import * as nodes from "./nodes";
 `;
 
 const exporter = `
@@ -19,4 +19,4 @@ module.exports = function(src) {
 	const source = parser.generate();
 
 	return `${imports} ${parser.generate()} ${exporter}`;
-}
+};

@@ -3,7 +3,8 @@
 %%
 
 \s+ /* skip whitespace */
-[0-9]+(\.[0-9]*)? return "NUMBER"
+\d+(\.\d*)?|\.\d+ return "NUMBER"
+\"(?:[^\"\\]|\\.)*\"|\'(?:[^'\\]|\\.)*\' return "STRING"
 "NULL" return "NULL"
 "TRUE" return "TRUE"
 "FALSE" return "FALSE"
@@ -37,22 +38,41 @@
 
 /lex
 
+%left OR
+%left AND
+%left NOT
+
 %start expression
 
 %%
 
 expression
-	: value EOF
-		{ $$ = $1; return $1; }
+	: expr EOF
+		{ return $1; }
+	;
+
+expr
+	: expr AND expr
+		{ $$ = new nodes.BoolOp(nodes.Op.AND, [$1, $3]) }
+	| expr OR expr
+		{ $$ = new nodes.BoolOp(nodes.Op.OR, [$1, $3]) }
+	| NOT expr
+		{ $$ = new nodes.UnaryOp(nodes.Op.NOT, $2) }
+	| value
+		{ $$ = $1 }
 	;
 
 value
 	: NULL
-		{ return new Null() }
+		{ $$ = new nodes.Null() }
 	| TRUE
-		{ $$ = True() }
+		{ $$ = new nodes.Bool(true) }
 	| FALSE
-		{ $$ = False() }
+		{ $$ = new nodes.Bool(false) }
 	| EMPTY
-		{ $$ = Empty() }
+		{ $$ = new nodes.Empty() }
+	| NUMBER
+		{ $$ = new nodes.Number($1.indexOf(".") >= 0 ? parseFloat($1) : parseInt($1)) }
+	| STRING
+		{ $$ = new nodes.String($1) }
 	;

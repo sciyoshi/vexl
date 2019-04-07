@@ -1,5 +1,3 @@
-
-
 declare const vexl: {
 	parse: (val: string) => string;
 };

@@ -1,4 +1,4 @@
-enum Op {
+export enum Op {
 	OR = "or",
 	AND = "and",
 	NOT = "not",
@@ -35,6 +35,10 @@ export class UnaryOp extends Node {
 		this.op = op;
 		this.arg = arg;
 	}
+
+	toString(): string {
+		return `${this.op} ${this.arg}`;
+	}
 }
 
 export class BoolOp extends Node {
@@ -47,6 +51,10 @@ export class BoolOp extends Node {
 		super();
 		this.op = op;
 		this.args = args;
+	}
+
+	toString(): string {
+		return this.args.map(el => el.toString()).join(` ${this.op} `);
 	}
 }
 
@@ -65,9 +73,24 @@ export class BinOp extends Node {
 	}
 }
 
-export class Null extends Node {
+export class Empty extends Node {
 	valueOf(): null {
 		return null;
+	}
+
+	toString(): string {
+		return "empty";
+	}
+}
+
+export class Ident extends Node {
+	static props = ["name"];
+
+	name: string;
+
+	constructor(name: string) {
+		super();
+		this.name = name;
 	}
 }
 
@@ -80,16 +103,28 @@ export class Value<T> extends Node {
 		super();
 		this.value = value;
 	}
+
+	valueOf(): T {
+		return this.value;
+	}
+
+	toString(): string {
+		return this.value.toString();
+	}
 }
 
-export class Number extends Value<number> {
+export class Null extends Node {
+	valueOf(): null {
+		return null;
+	}
 
+	toString(): string {
+		return "null";
+	}
 }
 
-export class String extends Value<string> {
+export class Number extends Value<number> {}
 
-}
+export class String extends Value<string> {}
 
-export class Bool extends Value<boolean> {
-
-}
+export class Bool extends Value<boolean> {}

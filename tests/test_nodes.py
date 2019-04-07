@@ -38,6 +38,7 @@ cases = [
     ["1 or not 2"],
     ["1 and 2 or 3"],
     ["1 or 2 and 3"],
+    ["(1 or 2) and 3"],
     # Binary operators
     ["1 is null"],
     ["1 is empty"],
