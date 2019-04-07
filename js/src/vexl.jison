@@ -74,5 +74,5 @@ value
 	| NUMBER
 		{ $$ = new nodes.Number($1.indexOf(".") >= 0 ? parseFloat($1) : parseInt($1)) }
 	| STRING
-		{ $$ = new nodes.String($1) }
+		{ $$ = new nodes.String(unescapeUnicode($1.substring(1, $1.length - 1))) }
 	;

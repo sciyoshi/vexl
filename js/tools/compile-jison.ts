@@ -2,6 +2,7 @@ const { Jison } = require("jison");
 
 const imports = `
 import * as nodes from "./nodes";
+import { unescapeUnicode } from "./utils";
 `;
 
 const exporter = `

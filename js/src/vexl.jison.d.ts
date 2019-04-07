@@ -1,7 +1,7 @@
+import * as nodes from "./nodes";
+
 declare const vexl: {
-	parse: (val: string) => string;
+	parse: (val: string) => nodes.Node;
 };
 
-// export default vexl;
-
-export const parse: (val: string) => string;
+export const parse: (val: string) => nodes.Node;
