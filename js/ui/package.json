@@ -1,0 +1,5 @@
+{
+  "main": "../dist/vexl.ui.umd.js",
+  "module": "../dist/vexl.ui.es5.js",
+  "typings": "../dist/types/ui/index.d.ts"
+}

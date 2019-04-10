@@ -1,0 +1,14 @@
+@tailwind base;
+
+@tailwind components;
+
+a {
+	@apply text-blue-700 underline;
+	transition: all 0.2s linear;
+}
+
+a:hover {
+	@apply text-blue-500;
+}
+
+@tailwind utilities;

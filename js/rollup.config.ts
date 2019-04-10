@@ -19,19 +19,37 @@ const jison = () => ({
 	}
 });
 
-export default {
-	input: "src/index.ts",
-	output: [
-		{
-			file: "dist/vexl.umd.js",
-			name: "vexl",
-			format: "umd",
-			sourcemap: true
+export default [
+	{
+		input: "src/index.ts",
+		output: [
+			{
+				file: "dist/vexl.umd.js",
+				name: "vexl",
+				format: "umd",
+				sourcemap: true
+			},
+			{ file: "dist/vexl.es5.js", format: "es", sourcemap: true }
+		],
+		watch: {
+			include: "src/**"
 		},
-		{ file: "dist/vexl.es5.js", format: "es", sourcemap: true }
-	],
-	watch: {
-		include: "src/**"
+		plugins: [jison(), typescript()]
 	},
-	plugins: [jison(), typescript()]
-};
+	{
+		input: "src/ui/index.tsx",
+		output: [
+			{
+				file: "dist/vexl.ui.umd.js",
+				name: "vexl.ui",
+				format: "umd",
+				sourcemap: true
+			},
+			{ file: "dist/vexl.ui.es5.js", format: "es", sourcemap: true }
+		],
+		watch: {
+			include: "src/**"
+		},
+		plugins: [jison(), typescript()]
+	}
+];

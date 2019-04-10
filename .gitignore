@@ -7,5 +7,6 @@ pip-wheel-metadata
 node_modules
 js/coverage
 js/dist
+js/.cache
 package-lock.json
 .rpt2_cache
