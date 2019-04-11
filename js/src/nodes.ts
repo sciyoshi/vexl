@@ -20,11 +20,76 @@ export enum Op {
 	DIV = "/"
 }
 
+export function precedence(op: Op): number {
+	switch (op) {
+		case Op.OR:
+			return 10;
+		case Op.AND:
+			return 20;
+		case Op.NOT:
+			return 30;
+		case Op.IS:
+			return 40;
+		case Op.ISNOT:
+			return 40;
+		case Op.IN:
+			return 40;
+		case Op.NOTIN:
+			return 40;
+		case Op.CT:
+			return 40;
+		case Op.NOTCT:
+			return 40;
+		case Op.EQ:
+			return 40;
+		case Op.NE:
+			return 40;
+		case Op.GE:
+			return 40;
+		case Op.GT:
+			return 40;
+		case Op.LE:
+			return 40;
+		case Op.LT:
+			return 40;
+		case Op.ADD:
+			return 50;
+		case Op.SUB:
+			return 50;
+		case Op.MUL:
+			return 60;
+		case Op.DIV:
+			return 60;
+	}
+}
+
+export function paren(parent: OpNode, child: Node): string {
+	if (
+		!(
+			child instanceof UnaryOp ||
+			child instanceof BoolOp ||
+			child instanceof BinOp
+		)
+	) {
+		return child.toString();
+	}
+
+	if (precedence(parent.op) <= precedence(child.op)) {
+		return child.toString();
+	}
+
+	return `(${child.toString()})`;
+}
+
 export class Node {
 	static props: string[] = [];
 }
 
-export class UnaryOp extends Node {
+export interface OpNode {
+	op: Op;
+}
+
+export class UnaryOp extends Node implements OpNode {
 	static props = ["op", "arg"];
 
 	op: Op;
@@ -37,7 +102,7 @@ export class UnaryOp extends Node {
 	}
 
 	toString(): string {
-		return `${this.op} ${this.arg}`;
+		return `${this.op} ${paren(this, this.arg)}`;
 	}
 }
 
@@ -54,7 +119,7 @@ export class BoolOp extends Node {
 	}
 
 	toString(): string {
-		return this.args.map(el => el.toString()).join(` ${this.op} `);
+		return this.args.map(el => paren(this, el)).join(` ${this.op} `);
 	}
 }
 
@@ -73,7 +138,7 @@ export class BinOp extends Node {
 	}
 
 	toString(): string {
-		return `${this.left} ${this.op} ${this.right}`;
+		return `${paren(this, this.left)} ${this.op} ${paren(this, this.right)}`;
 	}
 }
 

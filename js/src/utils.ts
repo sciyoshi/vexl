@@ -1,4 +1,4 @@
-const escapes: { [key:string]: string } = {
+const escapes: { [key: string]: string } = {
 	n: "\n",
 	t: "\t",
 	"\\": "\\",

@@ -38,7 +38,7 @@ describe("expression parser", () => {
 		["1 or not 2"],
 		["1 and 2 or 3"],
 		["1 or 2 and 3"],
-		// ["(1 or 2) and 3"],
+		["(1 or 2) and 3"],
 		// Binary operators
 		["1 is null"],
 		["1 is empty"],
@@ -64,7 +64,7 @@ describe("expression parser", () => {
 		["1 + 2 * 3"],
 		// Complex
 		// ["1 is 2 + 3 is 4"],
-		// ["(1 + 2) * 3 - 5 / 6"],
+		["(1 + 2) * 3 - 5 / 6"],
 		// ["(1.75 - 2) * [1, 4] - 'str' ~ 5 / 6 and 4 < 'another' or not 6 < 3"]
 	]).it("parses expression: %s", expr => {
 		expect(parse(expr).toString()).toEqual(expr);

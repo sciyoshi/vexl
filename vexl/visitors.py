@@ -121,7 +121,7 @@ class EvaluationVisitor(Visitor[Any]):
         return node.value
 
     def visit_Ident(self, node: Ident) -> Any:
-        return self.context[node.name]
+        return self.context.get(node.name, None)
 
     def visit_List(self, node: List) -> Any:
         return [self.visit(el) for el in self.children(node)]
@@ -130,7 +130,7 @@ class EvaluationVisitor(Visitor[Any]):
         value = self.visit(node.arg)
 
         if node.op == Op.NOT:
-            return not value
+            return None if value is None else not value
 
         return value
 
