@@ -1,9 +1,7 @@
 import React from "react";
+import Select from "react-select";
+import { ValueType } from "react-select/lib/types";
 
-export class Connective extends React.Component<{
-	type: "and" | "or";
-}> {
-	render() {
-		return <div>{this.props.type}</div>;
-	}
-}
+import { Node } from "../index";
+
+export { LogicBuilder } from "./LogicBuilder";
