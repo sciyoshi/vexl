@@ -1,6 +1,11 @@
 import React from "react";
+import { GraphQLObjectType } from "graphql"
 import Select from "react-select";
 import { ValueType } from "react-select/lib/types";
+
+interface VariableOption {
+	value: string;
+}
 
 interface PredicateOption {
 	value: string;
@@ -16,13 +21,34 @@ const predicates = {
 	isempty: "is empty"
 };
 
-export class Predicate extends React.Component<{
-	variable: string;
+interface PredicateProps {
+	variable: string
+	schema: GraphQLObjectType
 	predicate: "eq" | "ne" | "ct" | "notct";
-}> {
+
+	onVariableChange: (variable: string) => null;
+	onPredicateChange: (variable: string) => null;
+}
+
+export class Predicate extends React.Component<PredicateProps> {
+	static defaultProps = {
+		onVariableChange: (variable: string) => null,
+		onPredicateChange: (variable: string) => null
+	};
+
+	onVariableChange = (value: ValueType<VariableOption>) {
+		console.log("predicate changed", value);
+	}
+
 	onPredicateChange = (value: ValueType<PredicateOption>) => {
 		console.log("predicate changed", value);
 	};
+
+	getVariableOptions = (): VariableOption[] => {
+		console.log(this.props.schema.getFields());
+
+		return Object.entries(this.props.schema.getFields()).map(([name, type]) => ({ value: name, label: name }));
+	}
 
 	render() {
 		return (
@@ -36,11 +62,7 @@ export class Predicate extends React.Component<{
 						})
 					}}
 					value={{ value: this.props.variable, label: "First Name" }}
-					options={[
-						{ value: "first_name", label: "First Name" },
-						{ value: "last_name", label: "Last Name" },
-						{ value: "long_prop", label: "Some Very Long Property Here" }
-					]}
+					options={this.getVariableOptions()}
 				/>
 				<Select
 					styles={{

@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Node, Bool } from "../nodes";
+import { Node, BoolOp } from "../nodes";
 import { Predicate } from "./Predicate";
 
 export class Connective extends React.Component<{
@@ -8,11 +8,8 @@ export class Connective extends React.Component<{
 	connectives: string[];
 }> {
 	render() {
-		if (!item instanceof Bool) {
-			return;
-		}
-		return this.props.items.map((item as Bool) => (
-			<Predicate variable={item.op} predicate="ne" />;
+		return this.props.items.map((item) => (
+			<Predicate variable={(item as BoolOp).op} predicate="ne" />
 		));
 	}
 }

@@ -1,41 +1,44 @@
-import React from "react";
+import React, { useState } from "react";
 import ReactDOM from "react-dom";
 
 import { parse } from "../dist/vexl.es5.js";
 import { LogicBuilder } from "../src/ui/index";
 
-import { introspectionQuery, buildClientSchema, printSchema } from "graphql";
+import {
+	GraphQLSchema,
+	introspectionQuery,
+	buildClientSchema,
+	printSchema
+} from "graphql";
 
 declare global {
 	interface Window {
-		schema: any;
+		schema: GraphQLSchema;
 	}
 }
 
-function getQuery() {
-	fetch(`https://graphql-pokemon.now.sh/?query=${introspectionQuery}`, {
+function getSchema() {
+	return fetch(`https://graphql-pokemon.now.sh/?query=${introspectionQuery}`, {
 		method: "post"
 	})
 		.then(result => result.json())
-		.then(result => {
-			window.schema = buildClientSchema(result.data);
-			console.log(printSchema(buildClientSchema(result.data)));
-		});
+		.then(result => buildClientSchema(result.data));
 }
 
-function main() {
-	let expression = parse("first_name = 3 and last_name is not empty");
+const App: React.FunctionComponent<{ schema: GraphQLSchema }> = ({
+	schema
+}) => {
+	const [expr, setExpr] = useState(parse('first_name = "samuel"'));
 
-	console.log(expression);
-
-	ReactDOM.render(
+	return (
 		<div className="max-w-4xl mx-auto p-4 md:p-8">
-			<LogicBuilder expression={expression} />
-		</div>,
-		document.getElementById("vexl")
+			<LogicBuilder schema={schema.getType("Pokemon")} expression={expr} />
+		</div>
 	);
+};
+
+function main(schema: GraphQLSchema) {
+	ReactDOM.render(<App schema={schema} />, document.getElementById("vexl"));
 }
 
-// getQuery();
-
-main();
+getSchema().then(main);
