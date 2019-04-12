@@ -5,4 +5,8 @@ import { Connective } from "./Connective";
 
 export const LogicBuilder: React.FunctionComponent<{
 	expression: Node;
-}> = ({ expression }) => <Connective type="and" />;
+}> = ({ expression }) => {
+	const [items, setItems] = React.useState([]);
+
+	return <Connective connectives={[]} items={items} />;
+};
