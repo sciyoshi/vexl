@@ -1,7 +1,7 @@
 const path = require("path");
 const tsJest = require("ts-jest");
 const babelJest = require("babel-jest");
-const compileJison = require("./compile-jison.ts");
+const compileJison = require("./compile-jison");
 
 const transform = babelJest.createTransformer();
 

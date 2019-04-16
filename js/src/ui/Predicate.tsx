@@ -5,6 +5,7 @@ import { ValueType } from "react-select/lib/types";
 
 interface VariableOption {
 	value: string;
+	label: string;
 }
 
 interface PredicateOption {
@@ -30,8 +31,8 @@ interface PredicateProps {
 	schema: GraphQLObjectType;
 	predicate: "eq" | "ne" | "ct" | "notct";
 
-	onVariableChange: (variable: string) => null;
-	onPredicateChange: (variable: string) => null;
+	onVariableChange: (variable: string) => void;
+	onPredicateChange: (variable: string) => void;
 }
 
 export class Predicate<T> extends React.Component<PredicateProps> {
@@ -42,7 +43,7 @@ export class Predicate<T> extends React.Component<PredicateProps> {
 
 	onVariableChange = (value: ValueType<VariableOption>) => {
 		console.log("predicate changed", value);
-		this.props.onVariableChange(value.value);
+		this.props.onVariableChange("a");
 	};
 
 	onPredicateChange = (value: ValueType<PredicateOption>) => {
@@ -73,7 +74,7 @@ export class Predicate<T> extends React.Component<PredicateProps> {
 							marginRight: "0.5rem"
 						})
 					}}
-					value={{ value: this.props.variable, label: "First Name" }}
+					value={this.props.variable ? { value: this.props.variable, label: "First Name" } : null}
 					options={this.getVariableOptions()}
 					onChange={this.onVariableChange}
 				/>

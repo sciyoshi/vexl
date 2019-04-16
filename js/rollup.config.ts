@@ -1,7 +1,7 @@
 const Jison = require("jison");
 const { createFilter } = require("rollup-pluginutils");
 const typescript = require("rollup-plugin-typescript2");
-const compileJison = require("./tools/compile-jison.ts");
+const compileJison = require("./tools/compile-jison");
 
 const jison = () => ({
 	name: "jison",
