@@ -1,5 +1,5 @@
 import React from "react";
-import { GraphQLObjectType } from "graphql"
+import { GraphQLObjectType } from "graphql";
 import Select from "react-select";
 import { ValueType } from "react-select/lib/types";
 
@@ -12,6 +12,10 @@ interface PredicateOption {
 	label: string;
 }
 
+type Pred = {
+	variable: string;
+};
+
 const predicates = {
 	eq: "equals",
 	ne: "does not equal",
@@ -22,23 +26,24 @@ const predicates = {
 };
 
 interface PredicateProps {
-	variable: string
-	schema: GraphQLObjectType
+	variable: string | null;
+	schema: GraphQLObjectType;
 	predicate: "eq" | "ne" | "ct" | "notct";
 
 	onVariableChange: (variable: string) => null;
 	onPredicateChange: (variable: string) => null;
 }
 
-export class Predicate extends React.Component<PredicateProps> {
+export class Predicate<T> extends React.Component<PredicateProps> {
 	static defaultProps = {
 		onVariableChange: (variable: string) => null,
 		onPredicateChange: (variable: string) => null
 	};
 
-	onVariableChange = (value: ValueType<VariableOption>) {
+	onVariableChange = (value: ValueType<VariableOption>) => {
 		console.log("predicate changed", value);
-	}
+		this.props.onVariableChange(value.value);
+	};
 
 	onPredicateChange = (value: ValueType<PredicateOption>) => {
 		console.log("predicate changed", value);
@@ -48,7 +53,14 @@ export class Predicate extends React.Component<PredicateProps> {
 		console.log(this.props.schema.getFields());
 
 		return Object.entries(this.props.schema.getFields()).map(([name, type]) => ({ value: name, label: name }));
-	}
+	};
+
+	getPredicateOptions = (): PredicateOption[] => {
+		return Object.entries(predicates).map(([key, val]) => ({
+			value: key,
+			label: val
+		}));
+	};
 
 	render() {
 		return (
@@ -63,6 +75,7 @@ export class Predicate extends React.Component<PredicateProps> {
 					}}
 					value={{ value: this.props.variable, label: "First Name" }}
 					options={this.getVariableOptions()}
+					onChange={this.onVariableChange}
 				/>
 				<Select
 					styles={{
@@ -78,10 +91,7 @@ export class Predicate extends React.Component<PredicateProps> {
 						value: this.props.predicate,
 						label: predicates[this.props.predicate]
 					}}
-					options={Object.entries(predicates).map(([key, val]) => ({
-						value: key,
-						label: val
-					}))}
+					options={this.getPredicateOptions()}
 				/>
 			</div>
 		);

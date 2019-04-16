@@ -64,13 +64,7 @@ export function precedence(op: Op): number {
 }
 
 export function paren(parent: OpNode, child: Node): string {
-	if (
-		!(
-			child instanceof UnaryOp ||
-			child instanceof BoolOp ||
-			child instanceof BinOp
-		)
-	) {
+	if (!(child instanceof UnaryOp || child instanceof BoolOp || child instanceof BinOp)) {
 		return child.toString();
 	}
 
