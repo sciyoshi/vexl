@@ -4,13 +4,7 @@ import ReactDOM from "react-dom";
 import { parse } from "../src/index";
 import { LogicBuilder } from "../src/ui/index";
 
-import {
-	GraphQLSchema,
-	GraphQLObjectType,
-	introspectionQuery,
-	buildClientSchema,
-	printSchema
-} from "graphql";
+import { GraphQLSchema, GraphQLObjectType, introspectionQuery, buildClientSchema, printSchema } from "graphql";
 
 declare global {
 	interface Window {
@@ -26,12 +20,8 @@ function getSchema() {
 		.then(result => buildClientSchema(result.data));
 }
 
-const App: React.FunctionComponent<{ schema: GraphQLObjectType }> = ({
-	schema
-}) => {
-	const [expr, setExpr] = useState(parse('id in "test" and first_name = "samuel"'));
-
-	console.log(expr);
+const App: React.FunctionComponent<{ schema: GraphQLObjectType }> = ({ schema }) => {
+	const [expr, setExpr] = useState(parse('id in "test" and first_name = "samuel" and z = 9 or x = 4 and y = 6'));
 
 	return (
 		<div className="max-w-4xl mx-auto p-4 md:p-8">
