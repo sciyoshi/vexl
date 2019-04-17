@@ -1,10 +1,9 @@
 import React from "react";
 import { GraphQLObjectType } from "graphql";
 
-import { Node, BoolOp, BinOp, Op } from "../index";
+import { Node, BoolOp, BinOp, Ident, Op } from "../index";
 import { LogicGroup } from "./LogicGroup";
-import { Predicate } from "./Predicate";
-import { Connective } from "./utils";
+import { Connective, Condition } from "./utils";
 
 function isPredicate(node: Node) {
 	// FIXME: check left and right
@@ -20,10 +19,24 @@ function isDisjunctiveNormalForm(node: Node): boolean {
 	);
 }
 
-function flattenDNF(node: Node): { els: Node[]; connectives: Connective[] } {
+function toCondition(node: Node): Condition {
+	if (!(node instanceof BinOp)) {
+		return {
+			variable: null,
+			predicate: null
+		};
+	}
+
+	return {
+		variable: (node.left as Ident).name,
+		predicate: null
+	};
+}
+
+function flattenDNF(node: Node): { els: Condition[]; connectives: Connective[] } {
 	if (node instanceof BoolOp && node.op == Op.AND) {
 		return {
-			els: node.args,
+			els: node.args.map(toCondition),
 			connectives: new Array<Connective>(node.args.length - 1).fill(Connective.AND)
 		};
 	} else if (node instanceof BoolOp && node.op == Op.OR) {
@@ -40,7 +53,7 @@ function flattenDNF(node: Node): { els: Node[]; connectives: Connective[] } {
 		return result;
 	} else {
 		return {
-			els: [node],
+			els: [toCondition(node)],
 			connectives: []
 		};
 	}
@@ -54,12 +67,14 @@ export interface LogicBuilderProps {
 }
 
 export const LogicBuilder: React.FunctionComponent<LogicBuilderProps> = ({ expression, schema, onChange }) => {
-	const [variable, setVariable] = React.useState<string | null>(null);
+	const dnf = flattenDNF(expression);
+	const [advanced, setAdvanced] = React.useState(false);
+	const [items, setItems] = React.useState<Condition[]>(dnf.els);
+	const [connectives, setConnectives] = React.useState(dnf.connectives);
+	const [prevExpression, setPrevExpression] = React.useState<Node | null>(null);
 
 	if (isDisjunctiveNormalForm(expression)) {
-		const { els, connectives } = flattenDNF(expression);
-
-		return <LogicGroup schema={schema} connectives={connectives} items={els} />;
+		return <LogicGroup schema={schema} connectives={connectives} items={items} onItemsChanged={setItems} onConnectivesChanged={setConnectives} />;
 	} else {
 		return <div>Advanced mode not yet supported</div>;
 	}

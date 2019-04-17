@@ -21,7 +21,7 @@ function getSchema() {
 }
 
 const App: React.FunctionComponent<{ schema: GraphQLObjectType }> = ({ schema }) => {
-	const [expr, setExpr] = useState(parse('id in "test" and first_name = "samuel" and z = 9 or x = 4 and y = 6'));
+	const [expr, setExpr] = useState(parse('weight < 4 and resistant is empty or types = "hello"'));
 
 	return (
 		<div className="max-w-4xl mx-auto p-4 md:p-8">

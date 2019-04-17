@@ -54,7 +54,7 @@
   "jest": {
     "preset": "ts-jest",
     "transform": {
-      "\\.jison$": "<rootDir>/tools/jison-transformer.ts",
+      "\\.jison$": "<rootDir>/tools/jison-transformer.js",
       "\\.(ts|tsx)$": "ts-jest"
     },
     "testEnvironment": "node"
