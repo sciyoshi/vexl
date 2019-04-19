@@ -1,9 +1,22 @@
-import { Number, String, Bool } from "../nodes";
+import { Node, Number, String, Bool } from "../nodes";
 
 export const enum Connective {
 	AND = "and",
 	OR = "or"
 }
+
+export enum Type {
+	NUMBER,
+	STRING,
+	BOOL
+}
+
+export type Variable = {
+	node: Node;
+	type: Type;
+};
+
+export type Value = Number | String | Bool;
 
 export enum Predicate {
 	EQ = "equals",
@@ -15,7 +28,7 @@ export enum Predicate {
 }
 
 export interface Condition {
-	variable: string | null;
-	predicate: Predicate | null;
+	variable?: Variable;
+	predicate?: Predicate;
 	value?: Number | String | Bool;
 }

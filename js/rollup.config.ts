@@ -37,13 +37,18 @@ export default [
 		plugins: [jison(), typescript()]
 	},
 	{
-		input: "src/ui/index.tsx",
+		input: "src/ui/index.ts",
+		external: ["react", "react-select"],
 		output: [
 			{
 				file: "dist/vexl.ui.umd.js",
 				name: "vexl.ui",
 				format: "umd",
-				sourcemap: true
+				sourcemap: true,
+				globals: {
+					"react": "React",
+					"react-select": "Select"
+				}
 			},
 			{ file: "dist/vexl.ui.es5.js", format: "es", sourcemap: true }
 		],

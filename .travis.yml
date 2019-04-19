@@ -10,10 +10,13 @@ matrix:
       script:
         - poetry run flake8
         - poetry run py.test
+        - poetry run mypy --strict vexl
 
     - language: node_js
       node_js: 11
       dist: xenial
       before_script:
         - cd js
-        - npm install
+        - npm ci
+      script:
+        - npm run test

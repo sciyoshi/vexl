@@ -12,7 +12,8 @@
   "scripts": {
     "build": "tsc --module commonjs && rollup --config rollup.config.ts",
     "start": "rollup --config rollup.config.ts --watch",
-    "test": "jest --coverage"
+    "test": "jest --coverage",
+    "sample": "node ./tools/parcel-bundler.js"
   },
   "author": "",
   "license": "MIT",

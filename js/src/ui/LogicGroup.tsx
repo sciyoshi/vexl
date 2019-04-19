@@ -40,7 +40,7 @@ export const LogicGroup: React.FunctionComponent<{
 	const onItemAdd = (i: number) => {
 		const result = Array.from(items);
 
-		result.splice(i, 0, { variable: null, predicate: null });
+		result.splice(i + 1, 0, { variable: null, predicate: null });
 
 		onItemsChanged(result);
 
@@ -71,7 +71,7 @@ export const LogicGroup: React.FunctionComponent<{
 						schema={schema}
 						condition={item}
 						onChange={item => onItemChange(i, item)}
-						onAdd={() => onItemAdd(i + 1)}
+						onAdd={() => onItemAdd(i)}
 						onRemove={() => onItemRemove(i)}
 					/>
 				</React.Fragment>
