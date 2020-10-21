@@ -10,3 +10,4 @@ js/dist
 js/.cache
 package-lock.json
 .rpt2_cache
+.vscode

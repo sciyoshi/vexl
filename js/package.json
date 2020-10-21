@@ -1,72 +1,71 @@
 {
-  "name": "vexl",
-  "version": "1.0.0",
-  "description": "The versatile expression language",
-  "main": "dist/vexl.umd.js",
-  "module": "dist/vexl.es5.js",
-  "typings": "dist/types/vexl.d.ts",
-  "files": [
-    "dist",
-    "ui"
-  ],
-  "scripts": {
-    "build": "tsc --module commonjs && rollup --config rollup.config.ts",
-    "start": "rollup --config rollup.config.ts --watch",
-    "test": "jest --coverage",
-    "sample": "node ./tools/parcel-bundler.js"
-  },
-  "author": "",
-  "license": "MIT",
-  "sideEffects": false,
-  "devDependencies": {
-    "@babel/core": "^7.4.3",
-    "@babel/preset-env": "^7.4.3",
-    "@types/graphql": "^14.2.0",
-    "@types/jest": "^24.0.11",
-    "@types/jest-each": "^0.3.4",
-    "@types/node": "^11.13.0",
-    "@types/parcel-bundler": "^1.12.0",
-    "@types/react": "^16.8.13",
-    "@types/react-dom": "^16.8.3",
-    "@types/react-select": "^2.0.16",
-    "graphql": "^14.2.1",
-    "jest": "^24.7.1",
-    "jest-each": "^24.7.1",
-    "jison": "^0.4.18",
-    "parcel-bundler": "^1.12.3",
-    "prettier": "^1.16.4",
-    "rollup": "^1.8.0",
-    "rollup-plugin-babel": "^4.3.2",
-    "rollup-plugin-node-resolve": "^4.0.1",
-    "rollup-plugin-sourcemaps": "^0.4.2",
-    "rollup-plugin-typescript2": "^0.20.1",
-    "rollup-pluginutils": "^2.5.0",
-    "ts-jest": "^24.0.1",
-    "ts-jest-transformer": "^1.0.0",
-    "ts-node": "^8.0.3",
-    "typescript": "^3.4.1"
-  },
-  "dependencies": {
-    "react": "^16.8.6",
-    "react-dom": "^16.8.6",
-    "react-select": "^2.4.2",
-    "vue": "^2.6.10"
-  },
-  "jest": {
-    "preset": "ts-jest",
-    "transform": {
-      "\\.jison$": "<rootDir>/tools/jison-transformer.js",
-      "\\.(ts|tsx)$": "ts-jest"
-    },
-    "testEnvironment": "node"
-  },
-  "babel": {
-    "presets": [
-      "@babel/preset-env"
-    ]
-  },
-  "prettier": {
-    "useTabs": true,
-    "printWidth": 120
-  }
+	"name": "vexl",
+	"version": "1.0.0",
+	"description": "The versatile expression language",
+	"main": "dist/vexl.umd.js",
+	"module": "dist/vexl.es5.js",
+	"typings": "dist/types/vexl.d.ts",
+	"files": [
+		"dist",
+		"ui"
+	],
+	"scripts": {
+		"build": "tsc --module commonjs && rollup --config rollup.config.ts",
+		"start": "rollup --config rollup.config.ts --watch",
+		"test": "jest --coverage",
+		"sample": "node ./tools/parcel-bundler.js"
+	},
+	"author": "",
+	"license": "MIT",
+	"sideEffects": false,
+	"devDependencies": {
+		"@babel/core": "^7.4.3",
+		"@babel/preset-env": "^7.4.3",
+		"@types/graphql": "^14.2.0",
+		"@types/jest": "^26.0.15",
+		"@types/jest-each": "^24.3.0",
+		"@types/node": "^14.14.1",
+		"@types/parcel-bundler": "^1.12.0",
+		"@types/react": "^16.8.13",
+		"@types/react-dom": "^16.8.3",
+		"@types/react-select": "^3.0.22",
+		"graphql": "^15.3.0",
+		"jest": "^26.6.0",
+		"jest-each": "^26.6.0",
+		"jison": "^0.4.18",
+		"parcel-bundler": "^1.12.3",
+		"prettier": "^2.1.2",
+		"rollup": "^2.32.1",
+		"rollup-plugin-babel": "^4.3.2",
+		"rollup-plugin-node-resolve": "^5.2.0",
+		"rollup-plugin-sourcemaps": "^0.6.3",
+		"rollup-plugin-typescript2": "^0.28.0",
+		"rollup-pluginutils": "^2.5.0",
+		"ts-jest": "^26.4.1",
+		"ts-jest-transformer": "^1.0.0",
+		"ts-node": "^9.0.0",
+		"typescript": "^4.0.3"
+	},
+	"dependencies": {
+		"react": "^17.0.0",
+		"react-dom": "^17.0.0",
+		"react-select": "^3.1.0"
+	},
+	"jest": {
+		"preset": "ts-jest",
+		"transform": {
+			"\\.jison$": "<rootDir>/tools/jison-transformer.js",
+			"\\.(ts|tsx)$": "ts-jest"
+		},
+		"testEnvironment": "node"
+	},
+	"babel": {
+		"presets": [
+			"@babel/preset-env"
+		]
+	},
+	"prettier": {
+		"useTabs": true,
+		"printWidth": 120
+	}
 }

@@ -157,7 +157,7 @@ export class Ident extends Node {
 	}
 }
 
-export class Value<T> extends Node {
+export class Value<T extends Object> extends Node {
 	static props = ["value"];
 
 	value: T;

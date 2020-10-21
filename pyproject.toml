@@ -6,12 +6,12 @@ authors = ["Samuel Cormier-Iijima <samuel@cormier-iijima.com>"]
 license = "MIT"
 
 [tool.poetry.dependencies]
-python = "^3.7"
-ply = "^3.11"
+python = ">=3.7"
+ply = ">=3.11"
 
 [tool.poetry.dev-dependencies]
-pytest = "^4.3"
-flake8 = "^3.7"
+pytest = ">=4.3"
+flake8 = ">=3.7"
 
 [build-system]
 requires = ["poetry>=0.12"]
